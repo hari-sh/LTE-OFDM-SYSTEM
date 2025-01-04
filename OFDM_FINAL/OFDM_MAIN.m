@@ -7,8 +7,8 @@ clc;
 clear all;
 close all;
 
-choice=input('Do you want to work with random data or an image? 1 for random and 2 for image : ');
-channel_type=input('Select the Channel type:- 0 for AWGN type, 1 for Rayleigh--> ');
+choice=1
+channel_type=1
 disp('NOTE: Press any key to move to the next checkpoint');
 
 N=512; %total number of subcarriers,also size of FFT
@@ -36,11 +36,11 @@ if(choice==2)
     data=image_data_generator();
 end
 
-% Checkpoint_1(a)---Time and Frequency domains of data generating module
-disp('Checkpoint_1(a)---Time and Frequency domains of data generating module');
-pause
+% Checkpoint_1(a)---time1 and Frequency domains of data generating module
+disp('Checkpoint_1(a)---time1 and Frequency domains of data generating module');
+
 subplot(2,1,1);
-time(data(1:200),'time response','B');
+time_response(data(1:200),'time1 response','B');
 subplot(2,1,2);
 frequency_response(data(1:200),'frequency response','B');
 
@@ -65,7 +65,7 @@ for n_s=1:40 %n_s - slot number within a radio frame
         c_init=power(2,10)*(7*(n_s+1)+l+1)*(2*cell_id+1)+2*cell_id+N_CP;
         b=dec2bin2(c_init);
             
-       
+        
         for ii=length(b):-1:1
                 x2(ii)=b(ii);
         end
@@ -98,9 +98,9 @@ end
         end
         figure;
         subplot(2,1,1);
-        time(real(pilot_matrix(1:100)),'Time Response of 100 QPSK Modulated Pilot Samples(Real Part)','B');
+        time_response(real(pilot_matrix(1:100)),'Time Response of 100 QPSK Modulated Pilot Samples(Real Part)','B');
         hold on;
-        time(imag(pilot_matrix(1:100)),'Time Response of 100 QPSK Modulated Pilot Samples(Imaginary)','R');
+        time_response(imag(pilot_matrix(1:100)),'Time Response of 100 QPSK Modulated Pilot Samples(Imaginary)','R');
         subplot(2,1,2);
         frequency_response(pilot_matrix(1:100),'Freq Response of 100 QPSK Modulated Pilot Samples','B');
         
@@ -145,9 +145,9 @@ for each_slot=1:slots_per_frame
           if each_symbol==1 && each_slot==1
                 figure;
                 subplot(2,1,1);
-                time(real(data_symbol(1:100)),'Time Response of 100 16QAM Modulated Samples','B');
+                time_response(real(data_symbol(1:100)),'Time Response of 100 16QAM Modulated Samples','B');
                 hold on;
-                time(imag(data_symbol(1:100)),'Time Response of 100 16QAM Modulated Samples(I-blue Q-red)','R');
+                time_response(imag(data_symbol(1:100)),'Time Response of 100 16QAM Modulated Samples(I-blue Q-red)','R');
                 subplot(2,1,2);
                 frequency_response(data_symbol(1:100),'Freq Response of 100 16QAM Modulated Samples','B');
             end
@@ -195,9 +195,9 @@ for each_slot=1:slots_per_frame
            if each_slot==1 && each_symbol==1
                figure;
                subplot(2,1,1);
-               time(real(output_ifft(1:100)),' Output of the IFFT for first 100 carriers(real)','B');
+               time_response(real(output_ifft(1:100)),' Output of the IFFT for first 100 carriers(real)','B');
                hold on;
-               time(imag(output_ifft(1:100)),' Output of the IFFT for first 100 carriers(imag)','R');
+               time_response(imag(output_ifft(1:100)),' Output of the IFFT for first 100 carriers(imag)','R');
                subplot(2,1,2);
                frequency_response(output_ifft(1:100),'Frequency response of IFFT','B');
            end         
@@ -218,11 +218,11 @@ for each_slot=1:slots_per_frame
                zoom on
                % zoom in on the plot
                sequence_cp_zp=[zeros(36,1); sequence_cp];
-               time(sequence_cp_zp(1:36),'','W');
+               time_response(sequence_cp_zp(1:36),'','W');
                hold on;
-               time(sequence_cp_zp(37:572),' Time response of the rest of the sequence','R');
+               time_response(sequence_cp_zp(37:572),' Time response of the rest of the sequence','R');
                hold on;
-               time(sequence_cp(1:36),' Time response of the CP','B');
+               time_response(sequence_cp(1:36),' Time response of the CP','B');
                legend('','Without Cyclic Prefix','Cyclic Prefix','Location','SouthOutside');
            end
            
@@ -244,9 +244,9 @@ for each_slot=1:slots_per_frame
            if each_slot==1 && each_symbol==1
             figure;
             subplot(2,1,1);
-            time(real(upsampled_data),'Time Response of Upsampler','Y');
+            time_response(real(upsampled_data),'Time Response of Upsampler','Y');
             hold on;
-            time(imag(upsampled_data),'Time Response of Upsampler(I-yellow Q-green)','G');
+            time_response(imag(upsampled_data),'Time Response of Upsampler(I-yellow Q-green)','G');
             subplot(2,1,2);
             frequency_response(upsampled_data,'Freq Response of Upsampler','B');
            end
@@ -309,15 +309,15 @@ for each_slot=1:slots_per_frame
                     
                     figure;
                     subplot(2,1,1);
-                    time(real(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','B');
+                    time_response(real(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','B');
                     hold on;
-                    time(imag(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','R');
+                    time_response(imag(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','R');
                     
                     subplot(2,1,2);
                     
-                    time(real(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','B');
+                    time_response(real(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','B');
                     hold on;
-                    time(imag(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','R');
+                    time_response(imag(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','R');
                 end            
            
              else(channel_type==1)
@@ -330,15 +330,15 @@ for each_slot=1:slots_per_frame
                     if  SNR_DB(ss) == 5 && each_symbol==1 && each_slot==1 
                         figure;
                         subplot(2,1,1);
-                        time(real(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','B');
+                        time_response(real(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','B');
                         hold on;
-                        time(imag(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','R');
+                        time_response(imag(output_filter(200:400)),'I and Q phase response (I-Blue, Q-Red) for 200 samples','R');
                     
                         subplot(2,1,2);
                     
-                        time(real(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','B');
+                        time_response(real(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','B');
                         hold on;
-                        time(imag(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','R');
+                        time_response(imag(output_channel(200:400)),'I(Red) and Q(Blue) channel response ','R');
                     end
               end
         
@@ -445,7 +445,7 @@ for each_slot=1:slots_per_frame
                if SNR_DB(ss) == 5 && each_symbol==1 && each_slot==1 
                  figure;
                  subplot(2,1,1);
-                 time(Rx_data(200:400),'Time domain of demodulated signal','B');
+                 time_response(Rx_data(200:400),'Time domain of demodulated signal','B');
                  subplot(2,1,2);
                  frequency_response(Rx_data(200:400),'Frequency domain of demodulated signal','R');
                end                  
@@ -462,12 +462,12 @@ for each_slot=1:slots_per_frame
                  figure;
                  subplot(3,1,1);
                 
-                 time(data(200:400),'Time Response of Tx Data Bits at SNR -10 db','B');
+                 time_response(data(200:400),'Time Response of Tx Data Bits at SNR -10 db','B');
                  subplot(3,1,2);
                 
-                 time(Rx_data(200:400),'Time Response of Rx Data Bits at SNR -10 db','R');
+                 time_response(Rx_data(200:400),'Time Response of Rx Data Bits at SNR -10 db','R');
                  subplot(3,1,3);
-                 time(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at-10db','G');
+                 time_response(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at-10db','G');
                end    
                 
                if SNR_DB(ss) == 0  && each_symbol == 1 && each_slot == 1
@@ -476,12 +476,12 @@ for each_slot=1:slots_per_frame
                  figure;
                  subplot(3,1,1);
                 
-                 time(data(200:400),'Time Response of Tx Data Bits at SNR 0 db','B');
+                 time_response(data(200:400),'Time Response of Tx Data Bits at SNR 0 db','B');
                  subplot(3,1,2);
                 
-                 time(Rx_data(200:400),'Time Response of Rx Data Bits at SNR 0 db','R');
+                 time_response(Rx_data(200:400),'Time Response of Rx Data Bits at SNR 0 db','R');
                  subplot(3,1,3);
-                 time(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at 0','G');
+                 time_response(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at 0','G');
                end    
                
              
@@ -490,13 +490,13 @@ for each_slot=1:slots_per_frame
                
                  figure;
                  subplot(3,1,1);
-                 time(data(200:400),'Time Response of Tx Data Bits at SNR 10 db','B');
+                 time_response(data(200:400),'Time Response of Tx Data Bits at SNR 10 db','B');
                 
                  subplot(3,1,2);
-                 time(Rx_data(200:400),'Time Response of Rx Data Bits at SNR 10 db','R');
+                 time_response(Rx_data(200:400),'Time Response of Rx Data Bits at SNR 10 db','R');
                 
                  subplot(3,1,3);
-                 time(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at 10db','G');                   
+                 time_response(data(200:400) - Rx_data(200:400),'Comparing the Tx and Rx bits at 10db','G');                   
                end
                count=count+1;
         end
@@ -516,9 +516,9 @@ for ss=1:length(SNR_DB)
 end
 
 figure;
-semilogy(SNR_DB,error,'B');
+semilogy(SNR_DB,error);
 hold on
-semilogy(SNR_DB,theoryBer,'R');
+semilogy(SNR_DB,theoryBer);
 title('BER curve');
 xlabel('SNR');
 ylabel('BER');

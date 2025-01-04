@@ -10,7 +10,7 @@ function []=frequency_response(data,tit,col)
     ff=fs/len;
     f=[0:ff:fs]-fs/2;
     %stem(real(Hcentered),imag(Hcentered))
-    plot(f,abs(data_ss),col)
+    plot(f,abs(data_ss))
     title(tit);
     xlabel('frequency');
     ylabel('frequency response');
